@@ -109,24 +109,10 @@ const plugin: Plugin = async ({ directory, worktree }) => {
             const pc = (p[provider] ??= {}) as Record<string, unknown>
             pc["whitelist"] = models
           }
-
-          const exp = ((c["experimental"] ??= {}) as Record<string, unknown>)
-          exp["policies"] = [
-            ...modelAllowed.map((key) => ({
-              action: "provider.use" as const,
-              effect: "allow" as const,
-              resource: key,
-            })),
-            { action: "provider.use" as const, effect: "deny" as const, resource: "*" },
-          ]
         } else {
           c["enabled_providers"] = []
           c["model"] = undefined
           c["small_model"] = undefined
-          const exp = ((c["experimental"] ??= {}) as Record<string, unknown>)
-          exp["policies"] = [
-            { action: "provider.use" as const, effect: "deny" as const, resource: "*" },
-          ]
         }
       }
 
