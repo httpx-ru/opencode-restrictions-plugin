@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "@httpx-ru/opencode-restrictions-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Opencode plugin for restricting agents, models, and skills via a whitelist",
   "type": "module",
   "main": "dist/index.js",
