@@ -27,9 +27,9 @@ fi
 open_with_timeout() {
   local secs=$1; shift
   if [ "$TIMEOUT" = "perl -e" ]; then
-    perl -e "alarm $secs; exec @ARGV" -- "$@" 2>&1 || true
+    perl -e "alarm $secs; exec @ARGV" -- "$@" 2>&1
   else
-    $TIMEOUT "$secs" "$@" 2>&1 || true
+    $TIMEOUT "$secs" "$@" 2>&1
   fi
 }
 
@@ -147,10 +147,10 @@ if [ -z "${BOTHUB_API_KEY:-}" ]; then
   exit 0
 fi
 
-test_no_config
-test_allowed_model
-test_denied_model
-test_empty_models
+echo "--- test_no_config ---" && test_no_config || true
+echo "--- test_allowed_model ---" && test_allowed_model || true
+echo "--- test_denied_model ---" && test_denied_model || true
+echo "--- test_empty_models ---" && test_empty_models || true
 
 echo ""
 echo "═══ Results: $PASS passed, $FAIL failed ═══"
