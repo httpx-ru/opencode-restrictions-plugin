@@ -87,7 +87,7 @@ OPCODE
   if output=$(cd "$dir" && open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
     pass "no config: opencode ran successfully"
   else
-    fail "no config: opencode failed"
+    fail "no config: opencode failed — $(echo "$output" | head -3)"
   fi
   cleanup_testdir "$dir"
 }
@@ -113,7 +113,7 @@ test_allowed_model() {
   if output=$(cd "$dir" && open_with_timeout 45 opencode run "respond with just: ok" 2>&1); then
     pass "allowed model: works"
   else
-    fail "allowed model: failed"
+    fail "allowed model: failed — $(echo "$output" | head -3)"
   fi
   cleanup_testdir "$dir"
 }
