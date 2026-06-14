@@ -14,13 +14,21 @@ npm install @httpx-ru/opencode-restrictions-plugin
 
 ## Usage
 
-Add the plugin to your project's `opencode.json`:
+Add the plugin with a pinned version to your project's `opencode.json`:
 
 ```jsonc
 // opencode.json
 {
-  "plugin": ["@httpx-ru/opencode-restrictions-plugin"]
+  "plugin": ["@httpx-ru/opencode-restrictions-plugin@0.1.3"]
 }
+```
+
+Pinning the exact version prevents issues caused by opencode's plugin cache — it does not automatically check npm for updates on every launch. Using `@latest` or omitting the version entirely may cause the plugin to stall on an older cached version even after a newer one is published.
+
+After changing the pinned version, clear the cache before launching:
+
+```bash
+rm -rf ~/.cache/opencode/packages/@httpx-ru
 ```
 
 Create `.opencode/restrict.json` with your whitelist rules:
@@ -53,7 +61,7 @@ Create `.opencode/restrict.json` with your whitelist rules:
 | Resource | Mechanism | Enforcement |
 |----------|-----------|-------------|
 | **Agents** | `cfg.agent[name] = { disable: true }` via `config()` hook | hard |
-| **Models** | `enabled_providers` + `provider.whitelist` + `experimental.policies` | hard |
+| **Models** | `enabled_providers` + `provider.whitelist` | hard |
 | **Skills** | `permission.skill` deny-rules on all agents via `config()` hook | hard |
 
 ## Requirements
