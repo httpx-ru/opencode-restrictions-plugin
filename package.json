@@ -1,12 +1,20 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "@httpx-ru/opencode-restrictions-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Opencode plugin for restricting agents, models, and skills via a whitelist",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/httpx-ru/opencode-restrictions-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/httpx-ru/opencode-restrictions-plugin/issues"
+  },
+  "homepage": "https://github.com/httpx-ru/opencode-restrictions-plugin#readme",
   "author": "",
   "files": [
     "dist/"
