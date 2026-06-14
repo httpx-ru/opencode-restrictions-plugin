@@ -121,8 +121,8 @@ const plugin: Plugin = async ({ directory, worktree }) => {
           ]
         } else {
           c["enabled_providers"] = []
-          delete out.model
-          delete out.small_model
+          c["model"] = undefined
+          c["small_model"] = undefined
           const exp = ((c["experimental"] ??= {}) as Record<string, unknown>)
           exp["policies"] = [
             { action: "provider.use" as const, effect: "deny" as const, resource: "*" },

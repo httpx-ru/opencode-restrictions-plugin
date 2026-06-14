@@ -84,7 +84,7 @@ test_no_config() {
   cat > "$dir/opencode.json" <<OPCODE
 { "model": "$ALLOWED_MODEL", "plugin": ["$PLUGIN_PATH"] }
 OPCODE
-  if output=$(open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
+  if output=$(cd "$dir" && open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
     pass "no config: opencode ran successfully"
   else
     fail "no config: opencode failed"
@@ -97,7 +97,7 @@ test_denied_model() {
   info "Test: denied model should fail"
   local dir
   dir=$(setup_testdir)
-  if output=$(open_with_timeout 45 opencode run "respond with just: ok" --model "$DENIED_MODEL" 2>&1); then
+  if output=$(cd "$dir" && open_with_timeout 45 opencode run "respond with just: ok" --model "$DENIED_MODEL" 2>&1); then
     fail "denied model: should have failed but succeeded"
   else
     pass "denied model: blocked as expected"
@@ -110,7 +110,7 @@ test_allowed_model() {
   info "Test: allowed model should succeed"
   local dir
   dir=$(setup_testdir)
-  if output=$(open_with_timeout 45 opencode run "respond with just: ok" 2>&1); then
+  if output=$(cd "$dir" && open_with_timeout 45 opencode run "respond with just: ok" 2>&1); then
     pass "allowed model: works"
   else
     fail "allowed model: failed"
@@ -129,7 +129,7 @@ RESTRICT
   cat > "$dir/opencode.json" <<OPCODE
 { "model": "$ALLOWED_MODEL", "plugin": ["$PLUGIN_PATH"] }
 OPCODE
-  if output=$(open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
+  if output=$(cd "$dir" && open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
     fail "empty models.allowed: should have failed"
   else
     pass "empty models.allowed: all models denied"
