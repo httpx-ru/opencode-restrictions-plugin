@@ -72,6 +72,7 @@ SKILL
       "npm": "@ai-sdk/openai-compatible",
       "name": "BotHub",
       "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "env": ["BOTHUB_API_KEY"],
       "models": {
         "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
       }
@@ -102,6 +103,7 @@ test_no_config() {
       "npm": "@ai-sdk/openai-compatible",
       "name": "BotHub",
       "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "env": ["BOTHUB_API_KEY"],
       "models": {
         "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
       }
@@ -162,6 +164,7 @@ RESTRICT
       "npm": "@ai-sdk/openai-compatible",
       "name": "BotHub",
       "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "env": ["BOTHUB_API_KEY"],
       "models": {
         "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
       }
