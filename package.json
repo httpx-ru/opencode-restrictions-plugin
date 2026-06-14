@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@httpx-ru/opencode-restrictions-plugin",
+  "version": "0.1.0",
+  "description": "Opencode plugin for restricting agents, models, and skills via a whitelist",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": "",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "restrictions",
+    "whitelist"
+  ],
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.17.0",
+    "@types/node": "^25.9.3",
+    "typescript": "^5.7.0"
+  }
+}

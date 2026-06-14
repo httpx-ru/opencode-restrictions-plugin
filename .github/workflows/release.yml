@@ -1,0 +1,81 @@
+name: Release
+on:
+  pull_request:
+    types: [labeled]
+    branches: [main]
+
+jobs:
+  release:
+    if: github.event.label.name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: release-${{ github.head_ref }}
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      # ── Verify owner ──
+      - name: Verify owner
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PERM=$(gh api "repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission" --jq .permission)
+          if [ "$PERM" != "admin" ]; then
+            echo "❌ Only admins can trigger release. Your permission: $PERM"
+            exit 1
+          fi
+          echo "✅ Owner verified: $PERM"
+
+      # ── Read version ──
+      - id: pkg
+        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+
+      # ── Setup + build ──
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+
+      # ── Integration tests ──
+      - name: Install opencode
+        run: curl -fsSL https://opencode.ai/install | bash
+      - name: Integration tests
+        run: BOTHUB_API_KEY=${{ secrets.BOTHUB_API_KEY }} bash test/integration.sh
+
+      # ── Merge → Tag → Release → Publish ──
+      - name: Squash merge to main
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: gh pr merge ${{ github.event.number }} --squash --delete-branch
+
+      - name: Create and push tag
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          git fetch origin main
+          git checkout main
+          git tag v${{ steps.pkg.outputs.version }}
+          git push origin v${{ steps.pkg.outputs.version }}
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          gh release create v${{ steps.pkg.outputs.version }} \
+            --title "v${{ steps.pkg.outputs.version }}" \
+            --generate-notes
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
