@@ -66,7 +66,17 @@ SKILL
   "\$schema": "https://opencode.ai/config.json",
   "model": "$ALLOWED_MODEL",
   "default_agent": "plan",
-  "plugin": ["$PLUGIN_PATH"]
+  "plugin": ["$PLUGIN_PATH"],
+  "provider": {
+    "bothub": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "BotHub",
+      "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "models": {
+        "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
+      }
+    }
+  }
 }
 OPCODE
 
@@ -82,7 +92,22 @@ test_no_config() {
   dir=$(mktemp -d)
   mkdir -p "$dir/.opencode/agents"
   cat > "$dir/opencode.json" <<OPCODE
-{ "model": "$ALLOWED_MODEL", "plugin": ["$PLUGIN_PATH"] }
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "model": "$ALLOWED_MODEL",
+  "default_agent": "plan",
+  "plugin": ["$PLUGIN_PATH"],
+  "provider": {
+    "bothub": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "BotHub",
+      "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "models": {
+        "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
+      }
+    }
+  }
+}
 OPCODE
   if output=$(cd "$dir" && open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
     pass "no config: opencode ran successfully"
@@ -127,7 +152,22 @@ test_empty_models() {
 { "models": { "allowed": [] } }
 RESTRICT
   cat > "$dir/opencode.json" <<OPCODE
-{ "model": "$ALLOWED_MODEL", "plugin": ["$PLUGIN_PATH"] }
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "model": "$ALLOWED_MODEL",
+  "default_agent": "plan",
+  "plugin": ["$PLUGIN_PATH"],
+  "provider": {
+    "bothub": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "BotHub",
+      "options": { "baseURL": "https://openai.bothub.ru/v1" },
+      "models": {
+        "deepseek-v4-flash": { "name": "DeepSeek V4 Flash" }
+      }
+    }
+  }
+}
 OPCODE
   if output=$(cd "$dir" && open_with_timeout 20 opencode run "respond with just: ok" 2>&1); then
     fail "empty models.allowed: should have failed"
